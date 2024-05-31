@@ -42,3 +42,4 @@ defaults:
     values:
       tags: Other
       permalink: /blog/:categories/:year/:month/:day/:title/
+
