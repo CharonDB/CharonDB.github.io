@@ -34,9 +34,11 @@ titles_from_headings:
   strip_title: true
   collections: true
 
+permalink: pretty
 defaults:
   - scope:
       path: ""
       type: post
     values:
       tags: Other
+      permalink: /blog/:categories/:year/:month/:day/:title/
