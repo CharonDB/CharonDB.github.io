@@ -1,0 +1,5 @@
+@media (max-width: 576px) { /* Adjust for small devices */
+    .background-image-mobile {
+      background-position: center center; /* Center the image */
+    }
+  }
