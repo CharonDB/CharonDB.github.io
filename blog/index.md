@@ -13,5 +13,4 @@
         
     </div>
   </div>
-  <li></li>  
 {% endfor %}  
