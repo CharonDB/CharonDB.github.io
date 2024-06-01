@@ -1,3 +1,4 @@
 {% for p in site.posts %}
-  {{ p.url }}
+  [{{ p.title }}]({{ site.baseurl }}{{ p.url }})
+  {{ p.categories }}
 {% endfor %}
