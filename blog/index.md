@@ -1,6 +1,6 @@
 {% for post in site.posts limit:5 %}  
 
-  <div class="card">
+  <div class="card text-white bg-dark">
     <div class="card-body">
       <h5 class="card-title"><a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></h5>
       {% for cat in post.categories %}
