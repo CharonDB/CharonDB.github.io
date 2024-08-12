@@ -32,11 +32,13 @@
             height: auto;
             margin-top: 20px;
             border: 5px dashed #ff66ff;
-            animation: spin 5s infinite linear;
+            animation: spinAndOscillate 5s infinite linear;
         }
-        @keyframes spin {
+        @keyframes spinAndOscillate {
             0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            50% { transform: rotate(45deg); } /* Rotate to 45 degrees */
+            75% { transform: rotate(30deg); } /* Oscillate back slightly */
+            100% { transform: rotate(45deg); } /* Return to the 45-degree position */
         }
         iframe {
             border: 10px solid #ff0066;
