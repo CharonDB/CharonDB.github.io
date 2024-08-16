@@ -35,9 +35,10 @@
         }
         @keyframes spinAndOscillate {
             0% { transform: rotate(0deg); }
-            25% { transform: rotate(45deg); } /* Rotate to 45 degrees */
-            75% { transform: rotate(90deg); } /* Oscillate back slightly */
-            100% { transform: rotate(45deg); } /* Return to the 45-degree position */
+            25% { transform: rotate(45deg); } /* Rotate 45 degrees to the right */
+            50% { transform: rotate(-45deg); } /* Rotate 90 degrees to the left */
+            75% { transform: rotate(0deg); } /* Return to the original straight position */
+            100% { transform: rotate(0deg); } /* Maintain straight position */
         }
         iframe {
             border: 10px solid #ff0066;
