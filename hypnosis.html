@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unicode Hypnosis</title>
+  <style>
+    :root {
+      --bg-1: #07111a;
+      --bg-2: #10283a;
+      --ink: #dff8ff;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background:
+        radial-gradient(100vmax 80vmax at 15% 15%, #1a4057 0%, transparent 55%),
+        radial-gradient(90vmax 90vmax at 85% 85%, #0a1b2b 0%, transparent 60%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2));
+      background-color: var(--bg-1);
+    }
+
+    #hypnosis {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="hypnosis"></canvas>
+
+  <script>
+    const canvas = document.getElementById('hypnosis');
+    const ctx = canvas.getContext('2d', { alpha: true });
+
+    const shades = ' ░▒▓█';
+    const config = {
+      speed: 2.3,
+      ringFrequency: 1.9
+    };
+
+    let cols = 0;
+    let rows = 0;
+    let cellW = 8;
+    let cellH = 14;
+    let dpr = Math.max(1, window.devicePixelRatio || 1);
+    let fontPx = 12;
+
+    function viewportSize() {
+      const vv = window.visualViewport;
+      if (vv) return { w: Math.floor(vv.width), h: Math.floor(vv.height) };
+      return { w: window.innerWidth, h: window.innerHeight };
+    }
+
+    function chooseFontSize(w, h) {
+      const base = Math.max(8, Math.min(16, Math.round(Math.min(w, h) / 85)));
+      return base;
+    }
+
+    function setupTextMetrics() {
+      ctx.font = `${fontPx}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace`;
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textRendering = 'optimizeSpeed';
+      const m = ctx.measureText('█');
+      cellW = Math.max(1, Math.ceil(m.width));
+      cellH = Math.max(1, Math.ceil(fontPx));
+    }
+
+    function resize() {
+      const { w, h } = viewportSize();
+      dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = Math.max(1, Math.floor(w * dpr));
+      canvas.height = Math.max(1, Math.floor(h * dpr));
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      fontPx = chooseFontSize(w, h);
+      setupTextMetrics();
+
+      cols = Math.max(24, Math.ceil(w / cellW) + 1);
+      rows = Math.max(14, Math.ceil(h / cellH) + 1);
+    }
+
+    function shade(v) {
+      const clamped = Math.max(0, Math.min(1, v));
+      const idx = Math.round(clamped * (shades.length - 1));
+      return shades[idx];
+    }
+
+    function render(ms) {
+      const t = ms / 1000;
+      const { w, h } = viewportSize();
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#dff8ff';
+
+      const cx = cols / 2;
+      const cy = rows / 2;
+      const minDim = Math.max(1, Math.min(cols * cellW, rows * cellH));
+
+      for (let y = 0; y < rows; y++) {
+        const dy = (y - cy) * cellH;
+        const py = y * cellH;
+        let row = '';
+
+        for (let x = 0; x < cols; x++) {
+          const dx = (x - cx) * cellW;
+          const r = Math.hypot(dx, dy) / minDim;
+          const ringWave = Math.sin(r * 20 * config.ringFrequency - t * config.speed * 6);
+          const pulse = Math.sin(r * 8 - t * config.speed * 2.2);
+          const v = 0.5 + 0.35 * ringWave + 0.15 * pulse;
+          row += shade(v);
+        }
+
+        ctx.fillText(row, 0, py);
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    window.addEventListener('resize', resize);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', resize);
+    }
+
+    resize();
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>
