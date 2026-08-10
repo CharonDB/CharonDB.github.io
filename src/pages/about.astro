@@ -1,6 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+type CertificationItem = {
+  issuer: string;
+  type: 'Certification' | 'Training';
+  credential: string;
+  startDate: string;
+  endDate: string | null;
+  displayEndDate: string;
+  sortDate: string;
+  status: 'Active' | 'Training';
+  focus: string[];
+  mark: string;
+  logo?: string;
+  href?: string;
+};
+
 const industries = [
   {
     title: 'Medical',
@@ -19,11 +34,108 @@ const industries = [
   },
 ];
 
-const certifications = [
-  { title: 'Cisco', detail: 'Certified Network Associate', meta: '2023-2026', image: 'https://certwizard.com/sites/default/files/2020-04/cisco-ccna-certwizard.png' },
-  { title: 'Palo Alto Networks', detail: 'Cortex XSOAR: Administrator Training for MSSP', meta: '', image: 'https://media.licdn.com/dms/image/v2/C560BAQFZg72Sfni4SA/company-logo_200_200/company-logo_200_200/0/1657225156840/palo_alto_networks_logo?e=1748476800&v=beta&t=2_dw3fjdKEFkbru8Blvmn58q6i6a3vu9wZn23VsDm-w' },
-  { title: 'SANS', detail: 'SEC-555: Detection Engineering and SIEM Analytics', meta: '', image: 'https://www.sans.org/icons.svg#logo', href: 'https://www.sans.org/cyber-security-courses/detection-engineering-siem-analytics' },
+const certifications: CertificationItem[] = [
+  {
+    issuer: 'Cisco',
+    type: 'Certification',
+    credential: 'Certified Network Associate',
+    startDate: 'Nov 2023',
+    endDate: '2026-11-30',
+    displayEndDate: 'Nov 2026',
+    sortDate: '2023-11-01',
+    status: 'Active',
+    focus: ['Routing', 'Switching', 'Network fundamentals'],
+    mark: 'CCNA',
+  },
+  {
+    issuer: 'Palo Alto Networks',
+    type: 'Training',
+    credential: 'Cortex XSOAR: Administrator Training for MSSP',
+    startDate: 'Apr 2024',
+    endDate: null,
+    displayEndDate: 'Completed',
+    sortDate: '2024-04-01',
+    status: 'Training',
+    focus: ['SOAR operations', 'MSSP workflows', 'Automation'],
+    mark: 'PAN',
+  },
+  {
+    issuer: 'SANS',
+    type: 'Training',
+    credential: 'SEC-555: Detection Engineering and SIEM Analytics',
+    startDate: 'Not specified',
+    endDate: null,
+    displayEndDate: 'Completed',
+    sortDate: '2025-01-01',
+    status: 'Training',
+    focus: ['Detection engineering', 'SIEM analytics', 'Threat detection'],
+    mark: '555',
+    href: 'https://www.sans.org/cyber-security-courses/detection-engineering-siem-analytics',
+  },
+  {
+    issuer: 'SANS',
+    type: 'Training',
+    credential: 'SEC504: Hacker Tools, Techniques, and Incident Handling',
+    startDate: 'June 2026',
+    endDate: null,
+    displayEndDate: 'Completed',
+    sortDate: '2026-06-01',
+    status: 'Training',
+    focus: ['Incident handling', 'Attacker techniques', 'Threat response'],
+    mark: '504',
+    href: 'https://www.sans.org/cyber-security-courses/hacker-techniques-incident-handling',
+  },
+  {
+    issuer: 'GIAC',
+    type: 'Certification',
+    credential: 'GIAC Certified Detection Analyst',
+    startDate: 'Sep 2025',
+    endDate: '2029-09-30',
+    displayEndDate: 'Sep 2029',
+    sortDate: '2025-09-01',
+    status: 'Active',
+    focus: ['Detection engineering', 'SIEM analytics', 'Threat detection'],
+    mark: 'GCDA',
+  },
+  {
+    issuer: 'GIAC',
+    type: 'Certification',
+    credential: 'GIAC Information Security Fundamentals',
+    startDate: 'Mar 2026',
+    endDate: '2030-03-31',
+    displayEndDate: 'Mar 2030',
+    sortDate: '2026-03-01',
+    status: 'Active',
+    focus: ['Security fundamentals', 'Risk management', 'Defense in depth'],
+    mark: 'GISF',
+  },
+  {
+    issuer: 'GIAC',
+    type: 'Certification',
+    credential: 'GIAC Cloud Security Automation',
+    startDate: 'Feb 2026',
+    endDate: '2030-09-30',
+    displayEndDate: 'Sep 2030',
+    sortDate: '2026-02-01',
+    status: 'Active',
+    focus: ['Cloud security', 'Automation', 'DevSecOps'],
+    mark: 'GCSA',
+  },
 ];
+
+const issuerLogos: Record<string, string> = {
+  Cisco: '/assets/logos/cisco.svg',
+  'Palo Alto Networks': '/assets/logos/palo-alto-networks.svg',
+  IBM: '/assets/logos/ibm.svg',
+  'EC-Council': '/assets/logos/ec-council.svg',
+  SANS: '/assets/logos/sans.svg',
+  GIAC: '/assets/logos/giac.png',
+};
+
+const credentialItems = certifications.map((item) => ({
+  ...item,
+  logo: item.logo ?? issuerLogos[item.issuer],
+}));
 
 const education = [
   { title: 'Karel De Grote University College', meta: '2018-2023', detail: 'Bachelor of Applied Computer Science, minor in Systems & Network Administration', image: '/assets/img/kdg-logo.png' },
@@ -35,6 +147,29 @@ const extras = [
   { title: 'Hack the Future', meta: 'Cronos Group - November 2021', detail: 'First place challenge winner in the Azure Cloud Sustainability challenge.' },
   { title: 'Student Council', meta: '2018-2023', detail: 'Student council member for Applied Informatics, vice chair in 2021-2022, and chair in 2022-2023.' },
 ];
+
+const today = new Date();
+const activeCertifications = credentialItems.filter((item) => (
+  item.type === 'Certification'
+  && (
+    (item.endDate && new Date(item.endDate) >= today)
+    || (!item.endDate && item.status === 'Active')
+  )
+));
+
+const latestCredentialItems = [...credentialItems]
+  .sort((a, b) => new Date(b.sortDate).getTime() - new Date(a.sortDate).getTime())
+  .slice(0, 3);
+
+const activeCertificationGroups = [...activeCertifications
+  .reduce((groups, item) => {
+    const issuerCerts = groups.get(item.issuer) ?? [];
+    issuerCerts.push(item);
+    groups.set(item.issuer, issuerCerts);
+    return groups;
+  }, new Map<string, CertificationItem[]>())
+  .entries()]
+  .sort(([a], [b]) => a.localeCompare(b));
 ---
 
 <BaseLayout title="About Me">
@@ -74,20 +209,114 @@ const extras = [
       <div class="container">
         <div class="section-header">
           <h2>Certifications & Training</h2>
+          <p>Credentials and focused training that support the security, infrastructure, and automation work I do in production environments.</p>
         </div>
-        <div class="grid grid-3">
-          {certifications.map((item) => (
-            <article class="card">
-              <div class="card-body">
-                <div class="logo-tile"><img src={item.image} alt="" loading="lazy" /></div>
-                <h3>{item.title}</h3>
-                <p>
-                  {item.href ? <a href={item.href}>{item.detail}</a> : item.detail}
-                  {item.meta && <><br />{item.meta}</>}
-                </p>
-              </div>
-            </article>
-          ))}
+        <div class="credential-board">
+          <div class="credential-summary">
+            <p class="eyebrow">Current focus</p>
+            <h3>Network foundations, security operations, and detection engineering.</h3>
+            <p>
+              The mix is intentionally practical: the networking base to understand traffic,
+              SOAR training to automate response, and detection engineering to turn signals into useful alerts.
+            </p>
+          </div>
+          <div class="credential-list">
+            {latestCredentialItems.map((item) => (
+              <article class="credential-item">
+                <div class="credential-mark" aria-hidden="true">
+                  {item.logo ? <img src={item.logo} alt="" loading="lazy" /> : item.mark}
+                </div>
+                <div class="credential-copy">
+                  <div class="credential-meta">
+                    <span>{item.issuer}</span>
+                    <span>{item.status}</span>
+                  </div>
+                  <h3>
+                    {item.href ? <a href={item.href}>{item.credential}</a> : item.credential}
+                  </h3>
+                  <p>{item.startDate} - {item.displayEndDate}</p>
+                  <div class="pill-list">
+                    {item.focus.map((focus) => <span class="pill">{focus}</span>)}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="certification-subheading">
+          <p class="eyebrow">Credential list</p>
+          <h3>Active certifications</h3>
+          <p>Formal certifications and completed training I keep visible for quick review.</p>
+        </div>
+
+        <div class="certification-table-wrap" aria-label="All certifications and training">
+
+          <table class="certification-table">
+            <thead>
+              <tr>
+                <th scope="col">Status</th>
+                <th scope="col">Type</th>
+                <th scope="col">Issuer</th>
+                <th scope="col">Certification or training</th>
+                <th scope="col">Start</th>
+                <th scope="col">End</th>
+                <th scope="col">Focus areas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activeCertificationGroups.map(([issuer, issuerCerts]) => {
+                const hasMultipleCerts = issuerCerts.length > 1;
+                const firstCert = issuerCerts[0]!;
+
+                return hasMultipleCerts ? (
+                  <tr>
+                    <td data-label="Status">Active</td>
+                    <td data-label="Type">Certification</td>
+                    <td data-label="Issuer">{issuer}</td>
+                    <td data-label="Certification or training">
+                      <details class="certification-dropdown">
+                        <summary>x{issuerCerts.length}</summary>
+                        <div class="certification-dropdown-list">
+                          {issuerCerts.map((item) => (
+                            <article>
+                              <h4>
+                                {item.href ? <a href={item.href}>{item.credential}</a> : item.credential}
+                              </h4>
+                              <p>{item.startDate} - {item.displayEndDate}</p>
+                              <p>{item.focus.join(', ')}</p>
+                            </article>
+                          ))}
+                        </div>
+                      </details>
+                    </td>
+                    <td data-label="Start">Multiple</td>
+                    <td data-label="End">Multiple</td>
+                    <td data-label="Focus areas">
+                      {[...new Set(issuerCerts.flatMap((item) => item.focus))].join(', ')}
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td data-label="Status">{firstCert.status}</td>
+                    <td data-label="Type">{firstCert.type}</td>
+                    <td data-label="Issuer">{firstCert.issuer}</td>
+                    <td data-label="Certification or training">
+                      {firstCert.href ? <a href={firstCert.href}>{firstCert.credential}</a> : firstCert.credential}
+                    </td>
+                    <td data-label="Start">{firstCert.startDate}</td>
+                    <td data-label="End">{firstCert.displayEndDate}</td>
+                    <td data-label="Focus areas">{firstCert.focus.join(', ')}</td>
+                  </tr>
+                );
+              })}
+              {activeCertifications.length === 0 && (
+                <tr>
+                  <td colspan="7">No active certifications at the moment.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

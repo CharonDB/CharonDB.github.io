@@ -224,6 +224,195 @@ h1 {
   object-fit: contain;
 }
 
+.credential-board {
+  align-items: stretch;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+}
+
+.credential-summary {
+  background:
+    linear-gradient(140deg, rgba(79, 209, 197, 0.14), transparent 54%),
+    color-mix(in srgb, var(--panel-2) 82%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 26px;
+}
+
+.credential-summary h3 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  margin-bottom: 16px;
+}
+
+.credential-summary p:last-child {
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.credential-list {
+  display: grid;
+  gap: 12px;
+}
+
+.credential-item {
+  align-items: start;
+  background: color-mix(in srgb, var(--panel) 84%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 76px minmax(0, 1fr);
+  padding: 18px;
+}
+
+.credential-mark {
+  align-items: center;
+  aspect-ratio: 1;
+  background: #f7faf8;
+  border-radius: 8px;
+  color: #071015;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 900;
+  justify-content: center;
+}
+
+.credential-mark img {
+  max-height: 68%;
+  max-width: 74%;
+  object-fit: contain;
+}
+
+.credential-copy {
+  min-width: 0;
+}
+
+.credential-meta {
+  color: var(--accent-2);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  font-weight: 800;
+  gap: 8px;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.credential-meta span + span::before {
+  color: var(--muted);
+  content: "/";
+  margin-right: 8px;
+}
+
+.credential-copy h3 {
+  font-size: 1.2rem;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.credential-copy p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.certification-subheading {
+  margin: 42px 0 16px;
+  max-width: 680px;
+}
+
+.certification-subheading h3 {
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  margin-bottom: 10px;
+}
+
+.certification-subheading p:last-child {
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.certification-table-wrap {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.certification-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.certification-table th,
+.certification-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 15px 16px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.certification-table th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-2);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.certification-table td {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.certification-table td:first-child,
+.certification-table td:nth-child(2) {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.certification-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.certification-dropdown summary {
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.certification-dropdown summary::marker {
+  color: var(--accent-2);
+}
+
+.certification-dropdown-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.certification-dropdown-list article {
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+}
+
+.certification-dropdown-list h4 {
+  font-size: 0.98rem;
+  line-height: 1.3;
+  margin-bottom: 5px;
+}
+
+.certification-dropdown-list p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
 .pill-list {
   display: flex;
   flex-wrap: wrap;
@@ -418,6 +607,61 @@ h1 {
   .grid-2,
   .grid-3 {
     grid-template-columns: 1fr;
+  }
+
+  .credential-board,
+  .credential-item {
+    grid-template-columns: 1fr;
+  }
+
+  .credential-mark {
+    width: 68px;
+  }
+
+  .certification-table-wrap {
+    border: 0;
+    overflow: visible;
+  }
+
+  .certification-table,
+  .certification-table thead,
+  .certification-table tbody,
+  .certification-table tr,
+  .certification-table th,
+  .certification-table td {
+    display: block;
+  }
+
+  .certification-table thead {
+    display: none;
+  }
+
+  .certification-table tr {
+    background: color-mix(in srgb, var(--panel) 84%, transparent);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .certification-table td {
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    gap: 6px;
+    padding: 13px 14px;
+  }
+
+  .certification-table td::before {
+    color: var(--accent-2);
+    content: attr(data-label);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .certification-table td:last-child {
+    border-bottom: 0;
   }
 
   .blog-layout {
