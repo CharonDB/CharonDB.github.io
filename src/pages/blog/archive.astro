@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('posts'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const byTag = new Map<string, typeof posts>();
+
+for (const post of posts) {
+  for (const tag of [...post.data.tags, ...post.data.categories]) {
+    byTag.set(tag, [...(byTag.get(tag) ?? []), post]);
+  }
+}
+
+const groups = [...byTag.entries()].sort(([a], [b]) => a.localeCompare(b));
+const formatDate = (date: Date) => new Intl.DateTimeFormat('en', {
+  month: 'long',
+  year: 'numeric',
+}).format(date);
+---
+
+<BaseLayout title="Blog Archive">
+  <main class="container article">
+    <p class="eyebrow">Archive</p>
+    <h1>Blog Archive</h1>
+    <div class="grid" style="margin-top: 38px;">
+      {groups.map(([tag, taggedPosts]) => (
+        <section class="card" id={tag}>
+          <div class="card-body">
+            <h3>{tag}</h3>
+            <ul>
+              {taggedPosts.map((post) => {
+                const slug = post.id.replace(/\.mdx?$/, '');
+
+                return (
+                  <li>
+                    <a href={`/blog/${slug}/`}>{formatDate(post.data.date)} - {post.data.title}</a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

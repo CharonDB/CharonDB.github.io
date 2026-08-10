@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const industries = [
+  {
+    title: 'Medical',
+    image: '/assets/img/medical.jpg',
+    copy: 'Experience in medical academia and data, with a focus on context-aware IT solutions that support research and actionable outcomes.',
+  },
+  {
+    title: 'Pharmaceutical',
+    image: '/assets/img/pharmaceutical.jpg',
+    copy: 'Process automation, deployment automation, and IT orchestration in demanding GMP environments.',
+  },
+  {
+    title: 'Law Enforcement (BE)',
+    image: '/assets/img/le.jpg',
+    copy: 'Systems and network administration experience for the Belgian Police, where precision and reliability matter every day.',
+  },
+];
+
+const certifications = [
+  { title: 'Cisco', detail: 'Certified Network Associate', meta: '2023-2026', image: 'https://certwizard.com/sites/default/files/2020-04/cisco-ccna-certwizard.png' },
+  { title: 'Palo Alto Networks', detail: 'Cortex XSOAR: Administrator Training for MSSP', meta: '', image: 'https://media.licdn.com/dms/image/v2/C560BAQFZg72Sfni4SA/company-logo_200_200/company-logo_200_200/0/1657225156840/palo_alto_networks_logo?e=1748476800&v=beta&t=2_dw3fjdKEFkbru8Blvmn58q6i6a3vu9wZn23VsDm-w' },
+  { title: 'SANS', detail: 'SEC-555: Detection Engineering and SIEM Analytics', meta: '', image: 'https://www.sans.org/icons.svg#logo', href: 'https://www.sans.org/cyber-security-courses/detection-engineering-siem-analytics' },
+];
+
+const education = [
+  { title: 'Karel De Grote University College', meta: '2018-2023', detail: 'Bachelor of Applied Computer Science, minor in Systems & Network Administration', image: '/assets/img/kdg-logo.png' },
+  { title: 'Artesis Plantijn University of Applied Sciences', meta: '2016-2018', detail: 'Graduate degree in Systems & Network Administration', image: '/assets/img/artesisplantijn.png' },
+];
+
+const extras = [
+  { title: 'Computable Next Generation Award', meta: 'Cybersec Europe - April 2023', detail: 'First place for an educational performance in cybersecurity at Karel De Grote University College.', href: 'https://www.computable.be/artikel/nieuws/awards-nieuws/7496657/6499266/computable-eert-belgische-awards-winnaars-2023.html' },
+  { title: 'Hack the Future', meta: 'Cronos Group - November 2021', detail: 'First place challenge winner in the Azure Cloud Sustainability challenge.' },
+  { title: 'Student Council', meta: '2018-2023', detail: 'Student council member for Applied Informatics, vice chair in 2021-2022, and chair in 2022-2023.' },
+];
+---
+
+<BaseLayout title="About Me">
+  <main>
+    <section class="hero" style="--hero-image: url('/assets/img/it-bg.jpg')">
+      <div class="container hero-content">
+        <p class="eyebrow">About me</p>
+        <h1>Engineer for serious systems</h1>
+        <p>
+          I work where infrastructure, security, and messy real-world constraints
+          meet: automation, operations, data, and dependable delivery.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Industries & Expertise</h2>
+          <p>Hands-on technical work in regulated, high-pressure, and research-oriented environments.</p>
+        </div>
+        <div class="grid grid-3">
+          {industries.map((item) => (
+            <article class="card">
+              <img class="feature-image" src={item.image} alt="" loading="lazy" />
+              <div class="card-body">
+                <h3>{item.title}</h3>
+                <p>{item.copy}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Certifications & Training</h2>
+        </div>
+        <div class="grid grid-3">
+          {certifications.map((item) => (
+            <article class="card">
+              <div class="card-body">
+                <div class="logo-tile"><img src={item.image} alt="" loading="lazy" /></div>
+                <h3>{item.title}</h3>
+                <p>
+                  {item.href ? <a href={item.href}>{item.detail}</a> : item.detail}
+                  {item.meta && <><br />{item.meta}</>}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Contributions & Volunteering</h2>
+        </div>
+        <div class="grid grid-2">
+          <article class="card">
+            <div class="card-body">
+              <h3>Belgian Cyber Security Challenge</h3>
+              <p>Volunteer</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-body">
+              <h3>DEMISTO/CONTENT</h3>
+              <p>
+                <a href="https://cortex.marketplace.pan.dev/marketplace/details/MicrosoftDefenderAdvancedThreatProtection/">Microsoft Defender for Endpoint</a>
+                {' '}PR <a href="https://github.com/demisto/content/pull/39288">#39288</a><br />
+                <a href="https://cortex.marketplace.pan.dev/marketplace/details/MISP/">MISP V3</a>
+                {' '}PR <a href="https://github.com/demisto/content/pull/41270">#41270</a>
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Education</h2>
+        </div>
+        <div class="grid grid-2">
+          {education.map((item) => (
+            <article class="card">
+              <div class="card-body">
+                <div class="logo-tile"><img src={item.image} alt="" loading="lazy" /></div>
+                <h3>{item.title}</h3>
+                <p>{item.meta}<br />{item.detail}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Extracurricular</h2>
+        </div>
+        <div class="grid grid-3">
+          {extras.map((item) => (
+            <article class="card">
+              <div class="card-body">
+                <h3>{item.title}</h3>
+                <p>{item.meta}</p>
+                <p>{item.detail}</p>
+                {item.href && <p><a href={item.href}>Learn more</a></p>}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/about/', label: 'About' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="site-nav" aria-label="Primary">
+  <div class="container nav-inner">
+    <a class="brand" href="/">charond.be</a>
+    <div class="nav-links">
+      {links.map((link) => {
+        const isCurrent = link.href === '/'
+          ? currentPath === '/'
+          : currentPath.startsWith(link.href);
+
+        return (
+          <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
+            {link.label}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</nav>

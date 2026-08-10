@@ -1,8 +1,0 @@
-/* Adjust for small devices */
-
-@media (max-width: 1024px) {
-  .background-image-mobile {
-    background-position: center center;
-  }
-}
-
