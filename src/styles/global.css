@@ -258,9 +258,76 @@ h1 {
   padding: 26px 0;
 }
 
+.blog-layout {
+  align-items: start;
+  display: grid;
+  gap: 42px;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 780px);
+  justify-content: center;
+  padding: 58px 0 90px;
+}
+
+.blog-sidebar {
+  align-self: start;
+  background: rgba(19, 35, 43, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 26px;
+  padding: 20px;
+  position: sticky;
+  top: 92px;
+}
+
+.blog-sidebar h2 {
+  color: var(--accent-2);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.sidebar-list {
+  display: grid;
+  gap: 6px;
+}
+
+.sidebar-list a {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--ink);
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.sidebar-list a:hover,
+.sidebar-list a[aria-current="page"] {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--line);
+}
+
+.sidebar-list span {
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.sidebar-list time {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.sidebar-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .article {
   max-width: 780px;
-  padding: 68px 0 90px;
+  width: 100%;
 }
 
 .article time {
@@ -351,5 +418,14 @@ h1 {
   .grid-2,
   .grid-3 {
     grid-template-columns: 1fr;
+  }
+
+  .blog-layout {
+    grid-template-columns: 1fr;
+    padding-top: 32px;
+  }
+
+  .blog-sidebar {
+    position: static;
   }
 }

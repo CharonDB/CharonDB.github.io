@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import BlogSidebar from '../../components/BlogSidebar.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const posts = (await getCollection('posts'))
@@ -13,28 +14,31 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('en', {
 ---
 
 <BaseLayout title="Blog">
-  <main class="container article">
-    <p class="eyebrow">Blog</p>
-    <h1>Notes from the field</h1>
-    <div class="grid" style="margin-top: 38px;">
-      {posts.map((post) => {
-        const slug = post.id.replace(/\.mdx?$/, '');
+  <main class="container blog-layout">
+    <BlogSidebar />
+    <div class="article">
+      <p class="eyebrow">Blog</p>
+      <h1>Notes from the field</h1>
+      <div class="grid" style="margin-top: 38px;">
+        {posts.map((post) => {
+          const slug = post.id.replace(/\.mdx?$/, '');
 
-        return (
-          <article class="card">
-            <div class="card-body">
-              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-              <h3><a href={`/blog/${slug}/`}>{post.data.title}</a></h3>
-              {post.data.description && <p>{post.data.description}</p>}
-              <div class="pill-list">
-                {[...post.data.categories, ...post.data.tags].map((item) => (
-                  <a class="pill" href={`/blog/archive/#${item}`}>{item}</a>
-                ))}
+          return (
+            <article class="card">
+              <div class="card-body">
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                <h3><a href={`/blog/${slug}/`}>{post.data.title}</a></h3>
+                {post.data.description && <p>{post.data.description}</p>}
+                <div class="pill-list">
+                  {[...post.data.categories, ...post.data.tags].map((item) => (
+                    <a class="pill" href={`/blog/archive/#${item}`}>{item}</a>
+                  ))}
+                </div>
               </div>
-            </div>
-          </article>
-        );
-      })}
+            </article>
+          );
+        })}
+      </div>
     </div>
   </main>
 </BaseLayout>

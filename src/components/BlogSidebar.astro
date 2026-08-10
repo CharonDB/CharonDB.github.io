@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentSlug?: string;
+}
+
+const { currentSlug } = Astro.props;
+const posts = (await getCollection('posts'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const categories = [...new Set(posts.flatMap((post) => post.data.categories))]
+  .sort((a, b) => a.localeCompare(b));
+
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))]
+  .sort((a, b) => a.localeCompare(b));
+
+const formatDate = (date: Date) => new Intl.DateTimeFormat('en', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+}).format(date);
+---
+
+<aside class="blog-sidebar" aria-label="Blog navigation">
+  <section>
+    <h2>Articles</h2>
+    <nav class="sidebar-list">
+      {posts.map((post) => {
+        const slug = post.id.replace(/\.mdx?$/, '');
+        const isCurrent = currentSlug === slug;
+
+        return (
+          <a href={`/blog/${slug}/`} aria-current={isCurrent ? 'page' : undefined}>
+            <span>{post.data.title}</span>
+            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          </a>
+        );
+      })}
+    </nav>
+  </section>
+
+  {categories.length > 0 && (
+    <section>
+      <h2>Categories</h2>
+      <div class="sidebar-pills">
+        {categories.map((category) => (
+          <a class="pill" href={`/blog/archive/#${category}`}>{category}</a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {tags.length > 0 && (
+    <section>
+      <h2>Tags</h2>
+      <div class="sidebar-pills">
+        {tags.map((tag) => (
+          <a class="pill" href={`/blog/archive/#${tag}`}>{tag}</a>
+        ))}
+      </div>
+    </section>
+  )}
+</aside>

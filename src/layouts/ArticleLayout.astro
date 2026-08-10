@@ -1,14 +1,16 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import BlogSidebar from '../components/BlogSidebar.astro';
 
 interface Props {
   title: string;
   description?: string;
   date: Date;
   tags?: string[];
+  currentSlug?: string;
 }
 
-const { title, description, date, tags = [] } = Astro.props;
+const { title, description, date, tags = [], currentSlug } = Astro.props;
 const formattedDate = new Intl.DateTimeFormat('en', {
   month: 'long',
   day: 'numeric',
@@ -17,16 +19,19 @@ const formattedDate = new Intl.DateTimeFormat('en', {
 ---
 
 <BaseLayout title={title} description={description}>
-  <main class="container article">
-    <time datetime={date.toISOString()}>{formattedDate}</time>
-    <h1>{title}</h1>
-    {tags.length > 0 && (
-      <div class="pill-list" aria-label="Tags">
-        {tags.map((tag) => <a class="pill" href={`/blog/archive/#${tag}`}>{tag}</a>)}
-      </div>
-    )}
-    <article class="prose">
-      <slot />
-    </article>
+  <main class="container blog-layout">
+    <BlogSidebar currentSlug={currentSlug} />
+    <div class="article">
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+      <h1>{title}</h1>
+      {tags.length > 0 && (
+        <div class="pill-list" aria-label="Tags">
+          {tags.map((tag) => <a class="pill" href={`/blog/archive/#${tag}`}>{tag}</a>)}
+        </div>
+      )}
+      <article class="prose">
+        <slot />
+      </article>
+    </div>
   </main>
 </BaseLayout>

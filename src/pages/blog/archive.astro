@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import BlogSidebar from '../../components/BlogSidebar.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const posts = (await getCollection('posts'))
@@ -21,28 +22,31 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('en', {
 ---
 
 <BaseLayout title="Blog Archive">
-  <main class="container article">
-    <p class="eyebrow">Archive</p>
-    <h1>Blog Archive</h1>
-    <div class="grid" style="margin-top: 38px;">
-      {groups.map(([tag, taggedPosts]) => (
-        <section class="card" id={tag}>
-          <div class="card-body">
-            <h3>{tag}</h3>
-            <ul>
-              {taggedPosts.map((post) => {
-                const slug = post.id.replace(/\.mdx?$/, '');
+  <main class="container blog-layout">
+    <BlogSidebar />
+    <div class="article">
+      <p class="eyebrow">Archive</p>
+      <h1>Blog Archive</h1>
+      <div class="grid" style="margin-top: 38px;">
+        {groups.map(([tag, taggedPosts]) => (
+          <section class="card" id={tag}>
+            <div class="card-body">
+              <h3>{tag}</h3>
+              <ul>
+                {taggedPosts.map((post) => {
+                  const slug = post.id.replace(/\.mdx?$/, '');
 
-                return (
-                  <li>
-                    <a href={`/blog/${slug}/`}>{formatDate(post.data.date)} - {post.data.title}</a>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </section>
-      ))}
+                  return (
+                    <li>
+                      <a href={`/blog/${slug}/`}>{formatDate(post.data.date)} - {post.data.title}</a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   </main>
 </BaseLayout>

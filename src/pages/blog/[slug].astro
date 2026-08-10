@@ -20,6 +20,7 @@ const { Content } = await render(post);
   description={post.data.description}
   date={post.data.date}
   tags={[...post.data.categories, ...post.data.tags]}
+  currentSlug={post.id.replace(/\.mdx?$/, '')}
 >
   <Content />
 </ArticleLayout>
